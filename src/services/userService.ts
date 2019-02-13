@@ -11,10 +11,8 @@ export class UserService{
         try{
             let user = UserModel.userModel(req.body);
             let hashedPassword = passwordHash.generate(req.body['password']);
-            console.log(hashedPassword);
             user.password = hashedPassword;
             await user.save();
-            console.log(user);
             return ResponseService.getValidResponse(user);
 
         }
