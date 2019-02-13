@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 import {Db} from './DB'
-import { configRoutes } from 'routes';
+import { configRoutes } from './routes';
 
 
 export const app = express();

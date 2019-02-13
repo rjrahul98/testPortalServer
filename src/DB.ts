@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 export class Db{
-    private mongoUrl : string = "";
+    private mongoUrl: string = "mongodb://testPortal:rjrahul123@ds133275.mlab.com:33275/testportal";
 
     public connectMongooseServer(){
         mongoose.connect(this.mongoUrl, {useNewUrlParser: true})
