@@ -11,6 +11,7 @@ export class UserController{
 
     public async login(req : Request, res : Response){
         let loggedUser = await UserService.login(req);
+        res.header("hjgjhg", "hghjg");
         return res.json(loggedUser);
     }
 }
