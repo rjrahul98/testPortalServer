@@ -1,4 +1,4 @@
-import {CompanyModel} from './../dbModels/companySchema'
+import {DbModel} from './../dbModels/dbModel'
 import {ResponseService} from  './../helper/responseService'
 import { userInfo } from 'os';
 const passwordHash = require('password-hash')
@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 export class CompanyService{
     public static async signup(req : any){
         try{
-            let newCompany = CompanyModel.companyModel(req.body);
+            let newCompany = DbModel.CompanyModel(req.body);
             let hashedPassword = await passwordHash.generate(req.body['password']);
             newCompany.password = hashedPassword;
             await newCompany.save();
@@ -21,7 +21,7 @@ export class CompanyService{
 
     public static async login(req: any){
         try{
-            let company = await CompanyModel.companyModel.findOne({ 'CompanyEmail': req.body['CompanyEmail']}).exec();
+            let company = await DbModel.CompanyModel.findOne({ 'CompanyEmail': req.body['CompanyEmail']}).exec();
             if(company){
                 let isLoggedIn = await passwordHash.verify(req.body['password'], company.password);
                 if(isLoggedIn){

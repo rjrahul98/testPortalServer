@@ -5,4 +5,5 @@ var questionController_1 = require("./../controllers/questionController");
 exports.questionRoutes = express_1.Router();
 var questionController = new questionController_1.QuestionController();
 exports.questionRoutes.post('/addQuestion', questionController.addQuestion);
-exports.questionRoutes.post('/updateQuestion', questionController.updateQuestion);
+exports.questionRoutes.put('/updateQuestion/:id', questionController.updateQuestion);
+exports.questionRoutes.delete('/deleteQuestion/:id', questionController.deleteQuestion);

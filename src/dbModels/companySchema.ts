@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const CompanySchema = new mongoose.Schema({
+export const CompanySchema = new mongoose.Schema({
 
     CompanyName :{
         type : String,
@@ -18,7 +18,3 @@ const CompanySchema = new mongoose.Schema({
         required : [true, 'enter password']
     }
 })
-
-export class CompanyModel{
-    public static companyModel = mongoose.model('companyModel', CompanySchema);
-}

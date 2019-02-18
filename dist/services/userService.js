@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var userSchema_1 = require("./../dbModels/userSchema");
+var dbModel_1 = require("./../dbModels/dbModel");
 var responseService_1 = require("./../helper/responseService");
 var bcrypt = require('bcryptjs');
 var passwordHash = require('password-hash');
@@ -50,7 +50,7 @@ var UserService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        user = userSchema_1.UserModel.userModel(req.body);
+                        user = dbModel_1.DbModel.UserModel(req.body);
                         hashedPassword = passwordHash.generate(req.body['password']);
                         user.password = hashedPassword;
                         return [4 /*yield*/, user.save()];
@@ -71,8 +71,8 @@ var UserService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, , 8]);
-                        return [4 /*yield*/, userSchema_1.UserModel.userModel.findOne({ 'email': req.body['email'] }).exec()];
+                        _a.trys.push([0, 8, , 9]);
+                        return [4 /*yield*/, dbModel_1.DbModel.UserModel.findOne({ 'email': req.body['email'] }).exec()];
                     case 1:
                         user = _a.sent();
                         if (!user) return [3 /*break*/, 6];
@@ -87,12 +87,13 @@ var UserService = /** @class */ (function () {
                     case 4: return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('email or password is incorrect')];
                     case 5:
                         ;
-                        _a.label = 6;
-                    case 6: return [3 /*break*/, 8];
-                    case 7:
+                        return [3 /*break*/, 7];
+                    case 6: return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('user is not regisetred with us.')];
+                    case 7: return [3 /*break*/, 9];
+                    case 8:
                         err_2 = _a.sent();
                         return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_2)];
-                    case 8: return [2 /*return*/];
+                    case 9: return [2 /*return*/];
                 }
             });
         });

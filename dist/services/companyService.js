@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var companySchema_1 = require("./../dbModels/companySchema");
+var dbModel_1 = require("./../dbModels/dbModel");
 var responseService_1 = require("./../helper/responseService");
 var passwordHash = require('password-hash');
 var jwt = require('jsonwebtoken');
@@ -49,7 +49,7 @@ var CompanyService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        newCompany = companySchema_1.CompanyModel.companyModel(req.body);
+                        newCompany = dbModel_1.DbModel.CompanyModel(req.body);
                         return [4 /*yield*/, passwordHash.generate(req.body['password'])];
                     case 1:
                         hashedPassword = _a.sent();
@@ -73,7 +73,7 @@ var CompanyService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
-                        return [4 /*yield*/, companySchema_1.CompanyModel.companyModel.findOne({ 'CompanyEmail': req.body['CompanyEmail'] }).exec()];
+                        return [4 /*yield*/, dbModel_1.DbModel.CompanyModel.findOne({ 'CompanyEmail': req.body['CompanyEmail'] }).exec()];
                     case 1:
                         company = _a.sent();
                         if (!company) return [3 /*break*/, 3];

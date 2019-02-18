@@ -35,50 +35,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var questionService_1 = require("./../services/questionService");
-var QuestionController = /** @class */ (function () {
-    function QuestionController() {
+var testService_1 = require("./../services/testService");
+var TestController = /** @class */ (function () {
+    function TestController() {
     }
-    QuestionController.prototype.addQuestion = function (req, res) {
+    TestController.prototype.createTest = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var newQuestion;
+            var newTest;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, questionService_1.QuestionService.addQuestion(req)];
+                    case 0: return [4 /*yield*/, testService_1.TestService.createTest(req)];
                     case 1:
-                        newQuestion = _a.sent();
-                        return [2 /*return*/, res.json(newQuestion)];
+                        newTest = _a.sent();
+                        return [2 /*return*/, res.json(newTest)];
                 }
             });
         });
     };
     ;
-    QuestionController.prototype.updateQuestion = function (req, res) {
+    TestController.prototype.getTestDetails = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var updateQuestion;
+            var tests;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, questionService_1.QuestionService.updateQuestion(req)];
+                    case 0: return [4 /*yield*/, testService_1.TestService.getTestDetails(req)];
                     case 1:
-                        updateQuestion = _a.sent();
-                        return [2 /*return*/, res.json(updateQuestion)];
+                        tests = _a.sent();
+                        return [2 /*return*/, res.json(tests)];
                 }
             });
         });
     };
-    QuestionController.prototype.deleteQuestion = function (req, res) {
+    ;
+    TestController.prototype.verifyTest = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var response;
+            var test;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, questionService_1.QuestionService.deleteQuestion(req)];
+                    case 0: return [4 /*yield*/, testService_1.TestService.verifytTest(req)];
                     case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, res.json(response)];
+                        test = _a.sent();
+                        return [2 /*return*/, res.json(test)];
                 }
             });
         });
     };
-    return QuestionController;
+    return TestController;
 }());
-exports.QuestionController = QuestionController;
+exports.TestController = TestController;

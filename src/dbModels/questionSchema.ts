@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const QuestionSchema = new mongoose.Schema({
+export const QuestionSchema = new mongoose.Schema({
 
     statement : {type : String, required : true},
 
@@ -9,13 +9,9 @@ const QuestionSchema = new mongoose.Schema({
     option3: {type: String, required: true}, 
     option4: {type: String, required: true},
 
-    category : {type : String, enum : ['c', 'c++', 'javascript'], },
+    category : {type : String, required : true,  enum : ['c', 'c++', 'javascript'], },
 
     codeSample : {type : String},
 
     answer : {type : Number, required : true}
 });
-
-export class QuestionModel {
-    public static questionModel = mongoose.model('questionModel', QuestionSchema);
-}

@@ -21,6 +21,7 @@
   "homepage": "https://github.com/rjrahul98/testPortalServer#readme",
   "dependencies": {
     "@types/express": "^4.16.1",
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/mongoose": "^5.3.12",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -28,6 +29,7 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.11",
     "nodemon": "^1.18.10",
-    "password-hash": "^1.2.2"
+    "password-hash": "^1.2.2",
+    "uuid": "^3.3.2"
   }
 }

@@ -7,4 +7,5 @@ export const questionRoutes: Router = Router();
 const questionController = new QuestionController();
 
 questionRoutes.post('/addQuestion', questionController.addQuestion);
-questionRoutes.post('/updateQuestion/:id', questionController.updateQuestion);
+questionRoutes.put('/updateQuestion/:id', questionController.updateQuestion);
+questionRoutes.delete('/deleteQuestion/:id', questionController.deleteQuestion);

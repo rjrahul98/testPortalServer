@@ -1,4 +1,4 @@
-import {UserModel} from './../dbModels/userSchema'
+import {DbModel} from './../dbModels/dbModel'
 import {ResponseService} from './../helper/responseService'
 const bcrypt = require('bcryptjs')
 const passwordHash = require('password-hash')
@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 export class UserService{
     public static async signup(req : any){
         try{
-            let user = UserModel.userModel(req.body);
+            let user = DbModel.UserModel(req.body);
             let hashedPassword = passwordHash.generate(req.body['password']);
             user.password = hashedPassword;
             await user.save();
@@ -23,7 +23,7 @@ export class UserService{
 
     public static async login(req : any){
         try{
-            let user = await UserModel.userModel.findOne({'email' : req.body['email']}).exec();
+            let user = await DbModel.UserModel.findOne({'email' : req.body['email']}).exec();
             if(user){
                 let isValidUser = await passwordHash.verify(req.body['password'], user.password);
                 if(isValidUser){
@@ -31,6 +31,8 @@ export class UserService{
                     return ResponseService.getValidResponse({ 'token': token });
                 }
                 else { return ResponseService.getInValidResponse('email or password is incorrect') };
+            }else{
+                return ResponseService.getInValidResponse('user is not regisetred with us.')
             }
         }
         catch(err){

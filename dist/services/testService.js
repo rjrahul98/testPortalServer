@@ -35,73 +35,97 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var dbModel_1 = require("./../dbModels/dbModel");
 var responseService_1 = require("./../helper/responseService");
-var QuestionService = /** @class */ (function () {
-    function QuestionService() {
+var dbModel_1 = require("./../dbModels/dbModel");
+var random_1 = require("./../helper/random");
+var TestService = /** @class */ (function () {
+    function TestService() {
     }
-    QuestionService.addQuestion = function (req) {
+    TestService.createTest = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var question, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        question = dbModel_1.DbModel.QuestionModel.questionModel(req.body);
-                        return [4 /*yield*/, question.save()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse(question)];
-                    case 2:
-                        err_1 = _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_1)];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    QuestionService.updateQuestion = function (req) {
-        return __awaiter(this, void 0, void 0, function () {
-            var option, question, err_2;
+            var test, questions, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        option = { upsert: true, new: true, setDefaultsOnInsert: true };
-                        return [4 /*yield*/, dbModel_1.DbModel.QuestionModel.findOneAndUpdate({ '_id': req.params['id'] }, req.body, option).exec()];
+                        test = new dbModel_1.DbModel.TestModel();
+                        test.user = req.user.id;
+                        test.code = random_1.randomValue(6);
+                        test.score = '0';
+                        test.status = 'created';
+                        test.startedAt = Date.now();
+                        return [4 /*yield*/, dbModel_1.DbModel.QuestionModel.find({ 'category': 'c++' }).select('_id').exec()];
                     case 1:
-                        question = _a.sent();
-                        return [4 /*yield*/, question.save()];
+                        questions = _a.sent();
+                        test.questions = questions;
+                        return [4 /*yield*/, test.save()];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse('updated')];
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse(test)];
                     case 3:
-                        err_2 = _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_2)];
+                        err_1 = _a.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_1)];
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    QuestionService.deleteQuestion = function (req) {
+    TestService.getTestDetails = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var err_3;
+            var data, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, dbModel_1.DbModel.QuestionModel.remove({ '_id': req.params['id'] }).exec()];
+                        return [4 /*yield*/, dbModel_1.DbModel.TestModel.find().populate('user').populate('questions').exec()];
                     case 1:
-                        _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse('Question Deleted')];
+                        data = _a.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse(data)];
                     case 2:
-                        err_3 = _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('Something went wrong Please Check Question Id')];
+                        err_2 = _a.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_2)];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return QuestionService;
+    TestService.verifytTest = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            var questions, test, _i, questions_1, item, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, dbModel_1.DbModel.TestModel.find({ 'status': 'created', 'code': req.body['code'] }).exec()];
+                    case 1:
+                        questions = _a.sent();
+                        questions.status = 'started';
+                        return [4 /*yield*/, questions.save()];
+                    case 2:
+                        _a.sent();
+                        if (questions) {
+                            test = [];
+                            for (_i = 0, questions_1 = questions; _i < questions_1.length; _i++) {
+                                item = questions_1[_i];
+                                test.push({
+                                    'id': item._id,
+                                    'status': item.status
+                                });
+                            }
+                            return [2 /*return*/, responseService_1.ResponseService.getValidResponse(test)];
+                        }
+                        else {
+                            return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('test not found')];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_3 = _a.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_3)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TestService;
 }());
-exports.QuestionService = QuestionService;
+exports.TestService = TestService;

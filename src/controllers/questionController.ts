@@ -14,5 +14,8 @@ export class QuestionController {
         return res.json(updateQuestion);
     }
 
-   
+   public async deleteQuestion(req : Request, res : Response){
+       let response = await QuestionService.deleteQuestion(req);
+       return res.json(response);
+   }
 }
