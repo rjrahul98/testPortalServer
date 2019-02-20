@@ -9,3 +9,4 @@ const testController = new TestController();
 testRoutes.post('/createTest', testController.createTest);
 testRoutes.get('/getTests', testController.getTestDetails);
 testRoutes.post('/verifyTest', testController.verifyTest);
+testRoutes.post('/startTest', testController.startTest);

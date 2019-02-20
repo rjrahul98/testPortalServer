@@ -13,5 +13,6 @@ export const QuestionSchema = new mongoose.Schema({
 
     codeSample : {type : String},
 
-    answer : {type : Number, required : true}
+    answer : {type : Number, required : true},
+    taken : {type : Boolean, default : false},
 });

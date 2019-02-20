@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var responseService_1 = require("./../helper/responseService");
 var dbModel_1 = require("./../dbModels/dbModel");
 var random_1 = require("./../helper/random");
+var moment = require('moment');
 var TestService = /** @class */ (function () {
     function TestService() {
     }
@@ -51,9 +52,10 @@ var TestService = /** @class */ (function () {
                         test = new dbModel_1.DbModel.TestModel();
                         test.user = req.user.id;
                         test.code = random_1.randomValue(6);
-                        test.score = '0';
+                        test.score = 0;
                         test.status = 'created';
-                        test.startedAt = Date.now();
+                        test.createdAt = Date.now();
+                        test.duration = 30;
                         return [4 /*yield*/, dbModel_1.DbModel.QuestionModel.find({ 'category': 'c++' }).select('_id').exec()];
                     case 1:
                         questions = _a.sent();
@@ -91,38 +93,142 @@ var TestService = /** @class */ (function () {
     };
     TestService.verifytTest = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var questions, test, _i, questions_1, item, err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var test, now, prevdate, TotalDiff, remainingTime, _i, _a, question, res, err_3;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, dbModel_1.DbModel.TestModel.find({ 'status': 'created', 'code': req.body['code'] }).exec()];
+                        _b.trys.push([0, 11, , 12]);
+                        return [4 /*yield*/, dbModel_1.DbModel.TestModel.findOne({ 'code': req.body['code'] }).populate('questions').exec()];
                     case 1:
-                        questions = _a.sent();
-                        questions.status = 'started';
-                        return [4 /*yield*/, questions.save()];
+                        test = _b.sent();
+                        if (!(test && test.status == 'created')) return [3 /*break*/, 2];
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse({ 'testId': test._id })];
                     case 2:
-                        _a.sent();
-                        if (questions) {
-                            test = [];
-                            for (_i = 0, questions_1 = questions; _i < questions_1.length; _i++) {
-                                item = questions_1[_i];
-                                test.push({
-                                    'id': item._id,
-                                    'status': item.status
-                                });
-                            }
-                            return [2 /*return*/, responseService_1.ResponseService.getValidResponse(test)];
-                        }
-                        else {
-                            return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('test not found')];
-                        }
-                        return [3 /*break*/, 4];
+                        if (!(test && test.status == 'started')) return [3 /*break*/, 9];
+                        now = new Date();
+                        prevdate = test.startedAt;
+                        TotalDiff = now.getTime() - prevdate.getTime();
+                        remainingTime = Math.floor(TotalDiff / 1000 / 60);
+                        console.log(remainingTime);
+                        if (!(remainingTime < test.duration)) return [3 /*break*/, 7];
+                        _i = 0, _a = test.questions;
+                        _b.label = 3;
                     case 3:
-                        err_3 = _a.sent();
-                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_3)];
-                    case 4: return [2 /*return*/];
+                        if (!(_i < _a.length)) return [3 /*break*/, 6];
+                        question = _a[_i];
+                        res = question.taken;
+                        if (!(res == false)) return [3 /*break*/, 5];
+                        question.taken = true;
+                        return [4 /*yield*/, question.save()];
+                    case 4:
+                        _b.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse({
+                                'id': question._id,
+                                'statement': question.statement,
+                                'option1': question.option1,
+                                'option2': question.option2,
+                                'option3': question.option3,
+                                'option4': question.option4
+                            })];
+                    case 5:
+                        _i++;
+                        return [3 /*break*/, 3];
+                    case 6: return [3 /*break*/, 8];
+                    case 7: return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('test has been expired or completed')];
+                    case 8: return [3 /*break*/, 10];
+                    case 9:
+                        if (test && test.status == 'completed') {
+                            return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('test Already taken')];
+                        }
+                        _b.label = 10;
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        err_3 = _b.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('verifyTest api not working')];
+                    case 12: return [2 /*return*/];
                 }
+            });
+        });
+    };
+    TestService.startTest = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            var test, now, prevdate, TotalDiff, remainingTime, _i, _a, question, res, err_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 10, , 11]);
+                        return [4 /*yield*/, dbModel_1.DbModel.TestModel.findOne({ '_id': req.body['_id'] }).populate('questions').exec()];
+                    case 1:
+                        test = _b.sent();
+                        console.log(test);
+                        console.log('aaaaaaa');
+                        if (!(test && test.status == 'created')) return [3 /*break*/, 3];
+                        test.status = 'started';
+                        test.startedAt = Date.now();
+                        test.answers = [];
+                        test.answers.push({ 'value': req.body['answer'], 'id': test.questions[0]._id });
+                        return [4 /*yield*/, test.save()];
+                    case 2:
+                        _b.sent();
+                        console.log(test);
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse({
+                                'id': test.questions[0]._id,
+                                'statement': test.questions[0].statement,
+                                'option1': test.questions[0].option1,
+                                'option2': test.questions[0].option2,
+                                'option3': test.questions[0].option3,
+                                'option4': test.questions[0].option4
+                            })];
+                    case 3:
+                        if (!(test && test.status == 'started')) return [3 /*break*/, 9];
+                        now = new Date();
+                        prevdate = test.startedAt;
+                        TotalDiff = now.getTime() - prevdate.getTime();
+                        remainingTime = Math.floor(TotalDiff / 1000 / 60);
+                        console.log(remainingTime);
+                        if (!(remainingTime < test.duration)) return [3 /*break*/, 8];
+                        _i = 0, _a = test.questions;
+                        _b.label = 4;
+                    case 4:
+                        if (!(_i < _a.length)) return [3 /*break*/, 7];
+                        question = _a[_i];
+                        res = question.taken;
+                        if (!(res == false)) return [3 /*break*/, 6];
+                        question.taken = true;
+                        return [4 /*yield*/, question.save()];
+                    case 5:
+                        _b.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getValidResponse({
+                                'id': question._id,
+                                'statement': question.statement,
+                                'option1': question.option1,
+                                'option2': question.option2,
+                                'option3': question.option3,
+                                'option4': question.option4
+                            })];
+                    case 6:
+                        _i++;
+                        return [3 /*break*/, 4];
+                    case 7: return [3 /*break*/, 9];
+                    case 8: return [2 /*return*/, responseService_1.ResponseService.getInValidResponse('test has been expired or completed')];
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        err_4 = _b.sent();
+                        return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err_4)];
+                    case 11: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TestService.getNextQuestion = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                }
+                catch (err) {
+                    return [2 /*return*/, responseService_1.ResponseService.getInValidResponse(err)];
+                }
+                return [2 /*return*/];
             });
         });
     };

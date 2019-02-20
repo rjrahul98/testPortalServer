@@ -18,4 +18,10 @@ export class TestController {
         let test = await TestService.verifytTest(req);
         return res.json(test);
     }
+
+    public async startTest(req : Request, res : Response){
+        let response = await TestService.startTest(req);
+            return res.json(response);
+        
+    }
 }

@@ -47,7 +47,7 @@ var QuestionService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        question = dbModel_1.DbModel.QuestionModel.questionModel(req.body);
+                        question = dbModel_1.DbModel.QuestionModel(req.body);
                         return [4 /*yield*/, question.save()];
                     case 1:
                         _a.sent();

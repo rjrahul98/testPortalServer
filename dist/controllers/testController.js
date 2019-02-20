@@ -80,6 +80,19 @@ var TestController = /** @class */ (function () {
             });
         });
     };
+    TestController.prototype.startTest = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, testService_1.TestService.startTest(req)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, res.json(response)];
+                }
+            });
+        });
+    };
     return TestController;
 }());
 exports.TestController = TestController;

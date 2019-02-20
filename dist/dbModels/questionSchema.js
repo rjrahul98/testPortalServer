@@ -9,5 +9,6 @@ exports.QuestionSchema = new mongoose.Schema({
     option4: { type: String, required: true },
     category: { type: String, required: true, enum: ['c', 'c++', 'javascript'], },
     codeSample: { type: String },
-    answer: { type: Number, required: true }
+    answer: { type: Number, required: true },
+    taken: { type: Boolean, default: false },
 });

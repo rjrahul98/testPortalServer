@@ -5,7 +5,7 @@ import { ResponseService } from './../helper/responseService'
 export class QuestionService {
     public static async addQuestion(req: any) {        
         try {
-            let question = DbModel.QuestionModel.questionModel(req.body);
+            let question = DbModel.QuestionModel(req.body);
             await question.save();
             return ResponseService.getValidResponse(question);
 

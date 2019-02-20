@@ -6,4 +6,5 @@ exports.testRoutes = express_1.Router();
 var testController = new testController_1.TestController();
 exports.testRoutes.post('/createTest', testController.createTest);
 exports.testRoutes.get('/getTests', testController.getTestDetails);
-exports.testRoutes.put('/verifyTest', testController.verifyTest);
+exports.testRoutes.post('/verifyTest', testController.verifyTest);
+exports.testRoutes.post('/startTest', testController.startTest);

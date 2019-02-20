@@ -7,7 +7,9 @@ export const TestSchema = new mongoose.Schema({
     code : { type: String, required : true, unique : true},
     score : { type : Number, required : false},
     status : { type : String, enum : ['created', 'started', 'completed']},
-    updatedAt : {type : Date},
+    createdAt : {type : Date},
     startedAt : { type : Date},
-    questions: [{ type: Schema.Types.ObjectId, ref: 'question'}]
+    duration : {type : Number, required : true, default : 30}, // duration in minutes
+    questions: [{ type: Schema.Types.ObjectId, ref: 'question'}],
+    answers : [{value : Number, id : String}]
 });
