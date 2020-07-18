@@ -28,7 +28,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.11",
+    "mongoose": "^5.7.5",
     "nodemon": "^1.18.10",
     "password-hash": "^1.2.2",
     "uuid": "^3.3.2"
